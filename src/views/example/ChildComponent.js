@@ -27,6 +27,11 @@ class ChildComponent extends React.Component {
             showCourse: !this.state.showCourse
         })
     }
+
+    handleDelete = (course) => {
+        this.props.deleteCourse(course);
+    }
+
     render() {
         let { courses } = this.props;
         let { showCourse } = this.state
@@ -37,10 +42,14 @@ class ChildComponent extends React.Component {
                 <>
                     <div className="courseList">
                         {courses.map((course, index) => {
-                            if (course.price >= 2000) {
-                                return (<div key={course.id}>{index + 1}: {course.name} - {course.price}</div>)                         }
-                            }
-                        )}
+                            return (
+                            <>
+                                <div key={index}>{index + 1}: {course.name} - {course.price} 
+                                    <span key={course.id} onClick={() => this.handleDelete(course)}>X</span>
+                                </div>
+                            </>
+                            ) 
+                    })}
                     </div>
                     <div><button onClick={() => this.handleHideShow()}>hide</button></div>
                 </>}            

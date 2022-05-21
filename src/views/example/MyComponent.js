@@ -1,10 +1,9 @@
 import React from 'react';
 import ChildComponent from './ChildComponent';
+import AddComponent from './AddComponent';
 
 class MyComponent extends React.Component {
     state = {
-        firstname: "",
-        lastname: "",
         courses: [
             { id: 1, name: "HTML", price: "1000" },
             { id: 2, name: "CSS", price: "2000" },
@@ -13,41 +12,30 @@ class MyComponent extends React.Component {
         ]
     }
 
-    handleOnChangeInput = (e, input) => {
-        if (input === 'firstname') {
-            this.setState({
-                firstname: e.target.value
-            })
-        }
-        else if (input === 'lastname') {
-            this.setState({
-                lastname: e.target.value
-            })
-        }
+    addNewCourse = (course) => {
+        this.setState({
+            courses: [...this.state.courses, course]
+        })
     }
 
-    handleSubmit = (e) => {
-        e.preventDefault();
-        console.log(">>> data:", this.state)
-    }
+    deleteCourse = course => {
+        let currentCourses = this.state.courses;
+        let newCourse = currentCourses.filter(item => item.id !== course.id);
+        this.setState({
+            courses: newCourse 
+        })
+    } 
 
     render() {
-        console.log(">>>> state:", this.state)
         return (
             <>  
-                <form>
-                    <label htmlFor="fname">First name:</label><br />
-                    <input type="text" id="fname" name="fname" value={this.state.firstname}
-                    onChange={(e, input = "firstname") => this.handleOnChangeInput(e, input)} /><br/>
-                    <label htmlFor="lname">Last name:</label><br/>
-                    <input type="text" id="lname" name="lname" value={this.state.lastname} 
-                    onChange={(e, input = "lastname") => this.handleOnChangeInput(e, input)}/><br/><br/>
-                    <input type="submit" value="Submit" onClick={(e) => this.handleSubmit(e)}/>
-                </form>
+                <AddComponent
+                addNewCourse={this.addNewCourse}
+                />
+                
                 <ChildComponent
-                school={"HCMUS"}
-                classK={"17DTV2"}
                 courses={this.state.courses}
+                deleteCourse={this.deleteCourse}
                 />
             </>
         )
